@@ -106,7 +106,7 @@
 <body>
 
     <audio id="bg-music" loop>
-        <source src="https://files.catbox.moe/g2f7j1.mp3" type="audio/mpeg">
+        <source src="arash.mp3" type="audio/mpeg">
     </audio>
 
     <div id="slide-intro" class="slide-container active-slide">
@@ -166,7 +166,11 @@
         // Fungsi Memulai Web & Musik
         function mulaiWeb() {
             const musik = document.getElementById("bg-music");
-            musik.play().catch(error => console.log("Mencoba memutar audio..."));
+            musik.play().then(() => {
+                console.log("Musik berhasil diputar!");
+            }).catch(error => {
+                console.log("Gagal otomatis, browser memblokir:", error);
+            });
             nextSlide('slide-intro', 'slide-pin');
         }
 
