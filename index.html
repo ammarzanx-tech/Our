@@ -39,6 +39,19 @@
             bottom: -100px; left: -100px; opacity: 0.5;
         }
 
+        /* TOMBOL MUSIK FLOATING (SOLUSI ANTI-HELO) */
+        .music-control {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: rgba(255, 117, 140, 0.9); color: white;
+            width: 45px; height: 45px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s ease; animation: pulse 2s infinite;
+        }
+        .music-control.playing i { animation: spin 4s linear infinite; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
         /* Container Slide Utama */
         .slide-container {
             background: rgba(255, 255, 255, 0.85);
@@ -105,6 +118,10 @@
 </head>
 <body>
 
+    <div class="music-control" id="musicBtn" onclick="toggleMusic()">
+        <i class="fa-solid fa-music"></i>
+    </div>
+
     <audio id="bg-music" loop>
         <source src="arash.mp3" type="audio/mpeg">
     </audio>
@@ -152,24 +169,37 @@
     <div id="slide-akhir" class="slide-container hidden">
         <div class="heart-icon"><i class="fa-solid fa-face-laugh-beam"></i></div>
         <h2>cieee mauu WKWKWKW</h2>
-        <p style="font-style: italic; font-size: 13px;">"jujur pas gw ngetik ini skrng gw lagi kangen banget ahahaha😭 luu si bikin kangen gw teruss 🙄 setelah ini lanjut ke canvaa ya ada banyak cerita² sama hal hal yang mau gw kasih tau oiya satu hal lagi yang mau gw ngmg, you're special for me, HAHAHA APASI😭😭 YAUDAHH LANJUT CANVAA YA🙂‍↕️🙏."</p>
+        <p style="font-style: italic; font-size: 13px;">"jujur pas gw ngetik ini skrng gw lagi kangen banget ahahaha😭 luu si bikin kangen gw teruss🙄 setelah ini lanjut ke canvaa ya ada banyak cerita² sama hal hal yang mau gw kasih tau oiya satu hal lagi yang mau gw ngmg, you're special for me, HAHAHA APASI😭😭 YAUDAHH LANJUT CANVAA YA🙂‍↕️🙏."</p>
         <button class="btn" onclick="openCanva()">Lanjut Ke Canva 🚀</button>
     </div>
 
     <script>
         // -- PENGATURAN --
         const PIN_BENAR = "270910";
-        const LINK_CANVA = "https://www.canva.com"; // <-- Jangan lupa ganti link Canva-mu nanti!
+        const LINK_CANVA = "https://www.canva.com"; 
         
         let currentPin = "";
+        const musik = document.getElementById("bg-music");
+        const musicBtn = document.getElementById("musicBtn");
 
-        // Fungsi Memulai Web & Musik
+        // Fungsi Nyalakan / Matikan Musik Manual
+        function toggleMusic() {
+            if (musik.paused) {
+                musik.play();
+                musicBtn.classList.add('playing');
+            } else {
+                musik.pause();
+                musicBtn.classList.remove('playing');
+            }
+        }
+
+        // Fungsi Memulai Web
         function mulaiWeb() {
-            const musik = document.getElementById("bg-music");
+            // Tetap coba putar otomatis pas klik tombol utama
             musik.play().then(() => {
-                console.log("Musik berhasil diputar!");
+                musicBtn.classList.add('playing');
             }).catch(error => {
-                console.log("Gagal otomatis, browser memblokir:", error);
+                console.log("Autoplay ditahan browser, user harus ketuk tombol musik atas.");
             });
             nextSlide('slide-intro', 'slide-pin');
         }
